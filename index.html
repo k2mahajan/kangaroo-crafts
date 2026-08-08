@@ -108,25 +108,6 @@
     100% { transform: translateY(0) rotate(0deg); }
   }
 
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--orange-dark);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    font-size: 13px;
-    text-transform: uppercase;
-    margin: 4px 0 18px;
-  }
-
-  .eyebrow .dash {
-    width: 26px;
-    height: 2px;
-    background: var(--orange);
-    border-radius: 2px;
-  }
-
   h1 {
     color: var(--brown);
     font-size: 30px;
@@ -220,10 +201,10 @@
         <img class="logo-text" src="assets/logo_text.png" alt="Kangaroo Crafts" />
       </div>
 
-      <div class="eyebrow">
-        <span class="dash"></span>
-        Kangaroo Crafts
-        <span class="dash"></span>
+      <div class="divider">
+        <span class="line"></span>
+        <span class="dot"></span>
+        <span class="line"></span>
       </div>
 
       <h1 id="headline"></h1>
@@ -235,7 +216,7 @@
         <span class="line"></span>
       </div>
 
-      <span class="badge">Coming Soon</span>
+      <span class="badge">Launching Soon</span>
     </div>
 
     <footer>&copy; <span id="year"></span> Kangaroo Crafts. All rights reserved.</footer>
