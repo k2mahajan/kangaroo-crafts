@@ -130,10 +130,16 @@
 
   /*
     The "looking at camera" pose is stacked on top of the default one and
-    faded in for roughly half a second while the kangaroo is on the wordmark.
-    Both files share the same 3500x3500 canvas and registration, so the swap
-    doesn't shift the pose.
+    shown for roughly half a second while the kangaroo is on the wordmark.
+    The two swap instantly and in opposite directions, so only ever one is
+    visible: with both drawn at once their silhouettes would overlap.
+    Both files share the same 3500x3500 canvas and registration, so the
+    switch doesn't shift the pose.
   */
+  .roo-ahead {
+    animation: roo-ahead 5.6s linear infinite;
+  }
+
   .roo-look {
     position: absolute;
     top: 0;
@@ -142,12 +148,16 @@
     animation: roo-glance 5.6s linear infinite;
   }
 
+  @keyframes roo-ahead {
+    0%, 39.4%    { opacity: 1; }
+    39.5%, 48.4% { opacity: 0; }
+    48.5%, 100%  { opacity: 1; }
+  }
+
   @keyframes roo-glance {
-    0%, 38.5% { opacity: 0; }
-    39.5%     { opacity: 1; }
-    48.5%     { opacity: 1; }
-    49.5%     { opacity: 0; }
-    100%      { opacity: 0; }
+    0%, 39.4%    { opacity: 0; }
+    39.5%, 48.4% { opacity: 1; }
+    48.5%, 100%  { opacity: 0; }
   }
 
   /* Horizontal path: slides during each leap, holds still while on the wordmark. */
@@ -280,7 +290,7 @@
       <div class="logo-stage">
         <div class="roo-travel">
           <div class="roo-hop">
-            <img class="roo-art" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
+            <img class="roo-art roo-ahead" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
             <img class="roo-art roo-look" src="assets/logo_image_look.png" alt="" aria-hidden="true" />
           </div>
         </div>
