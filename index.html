@@ -82,15 +82,23 @@
 
   .logo-wrap {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 8px;
   }
 
-  .logo-wrap img {
-    width: 150px;
-    height: 150px;
+  .logo-wrap .logo-image {
+    width: 130px;
+    height: auto;
     object-fit: contain;
     animation: hop 2.6s ease-in-out infinite;
+  }
+
+  .logo-wrap .logo-text {
+    width: 210px;
+    height: auto;
+    object-fit: contain;
+    margin-top: 6px;
   }
 
   @keyframes hop {
@@ -187,7 +195,8 @@
 
   @media (max-width: 480px) {
     .card { padding: 40px 24px 32px; border-radius: 22px; }
-    .logo-wrap img { width: 120px; height: 120px; }
+    .logo-wrap .logo-image { width: 104px; }
+    .logo-wrap .logo-text { width: 170px; }
     h1 { font-size: 24px; min-height: 96px; }
     p.subtitle { font-size: 15px; }
   }
@@ -207,7 +216,8 @@
   <div class="wrap">
     <div class="card">
       <div class="logo-wrap">
-        <img src="assets/logo.png" alt="Kangaroo Crafts logo" />
+        <img class="logo-image" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
+        <img class="logo-text" src="assets/logo_text.png" alt="Kangaroo Crafts" />
       </div>
 
       <div class="eyebrow">
