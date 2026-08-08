@@ -81,34 +81,25 @@
   }
 
   /*
-    The kangaroo runs in from the left along the floor, leaps up onto the
-    wordmark, hops across it, then jumps off to the right and exits.
+    The kangaroo leaps in from off-screen left, lands on top of the wordmark,
+    pauses there, then leaps off to the right and exits. After a short beat
+    the next one enters and the cycle repeats.
     Horizontal travel and vertical hopping live on two nested elements so
     each can have its own timing: the outer element slides, the inner one
     arcs and squashes.
   */
   .logo-stage {
-    --roo-w: 105px;
-    --text-w: 210px;
-    --floor: 64px;
-    --stand: -126px;
-    --peak-high: -168px;
-    --peak-mid: -160px;
-    --peak-low: -34px;
-    --cycle: 5.5s;
-
     position: relative;
     width: 100%;
-    max-width: 380px;
+    max-width: 464px;
     margin: 0 auto 8px;
-    padding-top: 104px;
-    padding-bottom: var(--floor);
+    padding-top: 152px;
     overflow: hidden;
   }
 
   .logo-stage .logo-text {
     display: block;
-    width: var(--text-w);
+    width: 210px;
     height: auto;
     object-fit: contain;
     margin: 0 auto;
@@ -117,9 +108,9 @@
   .roo-travel {
     position: absolute;
     bottom: 0;
-    left: -32%;
-    width: var(--roo-w);
-    animation: roo-travel var(--cycle) linear infinite;
+    left: -36%;
+    width: 168px;
+    animation: roo-travel 5.2s linear infinite;
   }
 
   .roo-hop {
@@ -128,60 +119,40 @@
     height: auto;
     object-fit: contain;
     transform-origin: bottom center;
-    animation: roo-hop var(--cycle) linear infinite;
+    animation: roo-hop 5.2s linear infinite;
   }
 
-  /* Horizontal path: moves during each leap, holds while crouching to launch. */
+  /* Horizontal path: slides during each leap, holds still while on the wordmark. */
   @keyframes roo-travel {
-    0%   { left: -32%; opacity: 0; }
-    2%   { left: -32%; opacity: 1; }
-    14%  { left: -4%; }
-    18%  { left: -4%; }
-    32%  { left: 24%; }
-    39%  { left: 24%; }
-    51%  { left: 46%; }
-    58%  { left: 46%; }
-    72%  { left: 70%; }
-    76%  { left: 70%; }
-    88%  { left: 104%; opacity: 1; }
-    89%  { left: 104%; opacity: 0; }
-    90%  { left: -32%; opacity: 0; }
-    100% { left: -32%; opacity: 0; }
+    0%   { left: -36%; opacity: 0; }
+    3%   { left: -36%; opacity: 1; }
+    30%  { left: 33%; }
+    57%  { left: 33%; }
+    85%  { left: 104%; opacity: 1; }
+    86%  { left: 104%; opacity: 0; }
+    88%  { left: -36%; opacity: 0; }
+    100% { left: -36%; opacity: 0; }
   }
 
   /*
-    Vertical arcs. Every leap crouches first, rises with a decelerating
-    curve, hangs briefly at the apex, then falls with an accelerating one
-    and squashes on impact.
+    Vertical arcs. translateY is a percentage of the kangaroo's own height,
+    so the whole routine rescales automatically at smaller sizes.
+    Each leap pushes off with a decelerating curve, hangs at the apex, falls
+    with an accelerating one, and squashes on landing.
   */
   @keyframes roo-hop {
-    0%   { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
-    2%   { transform: translateY(0) scale(1.18, 0.82); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
-    8%   { transform: translateY(var(--peak-low)) scale(0.92, 1.1); animation-timing-function: ease-in; }
-    14%  { transform: translateY(0) scale(1.22, 0.78); animation-timing-function: ease-out; }
-    17%  { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
-    18%  { transform: translateY(0) scale(1.2, 0.8); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
-    25%  { transform: translateY(var(--peak-high)) scale(0.86, 1.16); animation-timing-function: ease-in; }
-    32%  { transform: translateY(var(--stand)) scale(1.22, 0.78); animation-timing-function: ease-out; }
-    35%  { transform: translateY(var(--stand)) scale(1, 1); animation-timing-function: ease-in; }
-    39%  { transform: translateY(var(--stand)) scale(1.16, 0.84); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
-    45%  { transform: translateY(var(--peak-mid)) scale(0.9, 1.13); animation-timing-function: ease-in; }
-    51%  { transform: translateY(var(--stand)) scale(1.2, 0.8); animation-timing-function: ease-out; }
-    54%  { transform: translateY(var(--stand)) scale(1, 1); animation-timing-function: ease-in; }
-    58%  { transform: translateY(var(--stand)) scale(1.16, 0.84); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
-    65%  { transform: translateY(var(--peak-mid)) scale(0.88, 1.15); animation-timing-function: ease-in; }
-    72%  { transform: translateY(0) scale(1.26, 0.74); animation-timing-function: ease-out; }
-    75%  { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
-    76%  { transform: translateY(0) scale(1.16, 0.84); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
-    82%  { transform: translateY(var(--peak-low)) scale(0.92, 1.1); animation-timing-function: ease-in; }
-    88%  { transform: translateY(0) scale(1.16, 0.84); animation-timing-function: ease-out; }
-    90%  { transform: translateY(0) scale(1, 1); }
-    100% { transform: translateY(0) scale(1, 1); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .roo-travel { left: 24%; animation: none; }
-    .roo-hop { transform: translateY(var(--stand)); animation: none; }
+    0%    { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
+    3%    { transform: translateY(0) scale(1.1, 0.91); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    14%   { transform: translateY(-70%) scale(0.94, 1.07); animation-timing-function: ease-in; }
+    30%   { transform: translateY(-37%) scale(1.11, 0.89); animation-timing-function: ease-out; }
+    34%   { transform: translateY(-37%) scale(1, 1); animation-timing-function: ease-in-out; }
+    44%   { transform: translateY(-37%) scale(1.012, 0.988); animation-timing-function: ease-in-out; }
+    53%   { transform: translateY(-37%) scale(1, 1); animation-timing-function: ease-in; }
+    57%   { transform: translateY(-37%) scale(1.1, 0.9); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    68%   { transform: translateY(-70%) scale(0.94, 1.07); animation-timing-function: ease-in; }
+    85%   { transform: translateY(0) scale(1.09, 0.91); animation-timing-function: ease-out; }
+    88%   { transform: translateY(0) scale(1, 1); }
+    100%  { transform: translateY(0) scale(1, 1); }
   }
 
   .message-box {
@@ -236,21 +207,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   @media (max-width: 480px) {
     .card { padding: 40px 24px 32px; border-radius: 22px; }
     .logo-stage {
-      --roo-w: 88px;
-      --text-w: 170px;
-      --floor: 55px;
-      --stand: -105px;
-      --peak-high: -141px;
-      --peak-mid: -134px;
-      --peak-low: -28px;
-      max-width: 300px;
-      padding-top: 88px;
+      max-width: 305px;
+      padding-top: 100px;
     }
+    .logo-stage .logo-text { width: 138px; }
+    .roo-travel { width: 110px; }
     .message-box { padding: 22px 20px; }
     .message-box h1 { font-size: 21px; min-height: 88px; }
     .message-box p.subtitle { font-size: 14px; }
