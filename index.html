@@ -115,12 +115,39 @@
   }
 
   .roo-hop {
+    position: relative;
+    width: 100%;
+    transform-origin: bottom center;
+    animation: roo-hop 5.6s linear infinite;
+  }
+
+  .roo-art {
     display: block;
     width: 100%;
     height: auto;
     object-fit: contain;
-    transform-origin: bottom center;
-    animation: roo-hop 5.6s linear infinite;
+  }
+
+  /*
+    The "looking at camera" pose is stacked on top of the default one and
+    faded in for roughly half a second while the kangaroo is on the wordmark.
+    Both files share the same 3500x3500 canvas and registration, so the swap
+    doesn't shift the pose.
+  */
+  .roo-look {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: roo-glance 5.6s linear infinite;
+  }
+
+  @keyframes roo-glance {
+    0%, 38.5% { opacity: 0; }
+    39.5%     { opacity: 1; }
+    48.5%     { opacity: 1; }
+    49.5%     { opacity: 0; }
+    100%      { opacity: 0; }
   }
 
   /* Horizontal path: slides during each leap, holds still while on the wordmark. */
@@ -252,7 +279,10 @@
     <div class="card">
       <div class="logo-stage">
         <div class="roo-travel">
-          <img class="roo-hop" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
+          <div class="roo-hop">
+            <img class="roo-art" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
+            <img class="roo-art roo-look" src="assets/logo_image_look.png" alt="" aria-hidden="true" />
+          </div>
         </div>
         <img class="logo-text" src="assets/logo_text.png" alt="Kangaroo Crafts" />
       </div>
