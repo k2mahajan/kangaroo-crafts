@@ -80,32 +80,108 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .logo-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 8px;
+  /*
+    The kangaroo runs in from the left along the floor, leaps up onto the
+    wordmark, hops across it, then jumps off to the right and exits.
+    Horizontal travel and vertical hopping live on two nested elements so
+    each can have its own timing: the outer element slides, the inner one
+    arcs and squashes.
+  */
+  .logo-stage {
+    --roo-w: 105px;
+    --text-w: 210px;
+    --floor: 64px;
+    --stand: -126px;
+    --peak-high: -168px;
+    --peak-mid: -160px;
+    --peak-low: -34px;
+    --cycle: 5.5s;
+
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto 8px;
+    padding-top: 104px;
+    padding-bottom: var(--floor);
+    overflow: hidden;
   }
 
-  .logo-wrap .logo-image {
-    width: 175px;
+  .logo-stage .logo-text {
+    display: block;
+    width: var(--text-w);
     height: auto;
     object-fit: contain;
-    animation: hop 2.6s ease-in-out infinite;
+    margin: 0 auto;
   }
 
-  .logo-wrap .logo-text {
-    width: 210px;
+  .roo-travel {
+    position: absolute;
+    bottom: 0;
+    left: -32%;
+    width: var(--roo-w);
+    animation: roo-travel var(--cycle) linear infinite;
+  }
+
+  .roo-hop {
+    display: block;
+    width: 100%;
     height: auto;
     object-fit: contain;
-    margin-top: 6px;
+    transform-origin: bottom center;
+    animation: roo-hop var(--cycle) linear infinite;
   }
 
-  @keyframes hop {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    15% { transform: translateY(-14px) rotate(-3deg); }
-    30% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(0) rotate(0deg); }
+  /* Horizontal path: moves during each leap, holds while crouching to launch. */
+  @keyframes roo-travel {
+    0%   { left: -32%; opacity: 0; }
+    2%   { left: -32%; opacity: 1; }
+    14%  { left: -4%; }
+    18%  { left: -4%; }
+    32%  { left: 24%; }
+    39%  { left: 24%; }
+    51%  { left: 46%; }
+    58%  { left: 46%; }
+    72%  { left: 70%; }
+    76%  { left: 70%; }
+    88%  { left: 104%; opacity: 1; }
+    89%  { left: 104%; opacity: 0; }
+    90%  { left: -32%; opacity: 0; }
+    100% { left: -32%; opacity: 0; }
+  }
+
+  /*
+    Vertical arcs. Every leap crouches first, rises with a decelerating
+    curve, hangs briefly at the apex, then falls with an accelerating one
+    and squashes on impact.
+  */
+  @keyframes roo-hop {
+    0%   { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
+    2%   { transform: translateY(0) scale(1.18, 0.82); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    8%   { transform: translateY(var(--peak-low)) scale(0.92, 1.1); animation-timing-function: ease-in; }
+    14%  { transform: translateY(0) scale(1.22, 0.78); animation-timing-function: ease-out; }
+    17%  { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
+    18%  { transform: translateY(0) scale(1.2, 0.8); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    25%  { transform: translateY(var(--peak-high)) scale(0.86, 1.16); animation-timing-function: ease-in; }
+    32%  { transform: translateY(var(--stand)) scale(1.22, 0.78); animation-timing-function: ease-out; }
+    35%  { transform: translateY(var(--stand)) scale(1, 1); animation-timing-function: ease-in; }
+    39%  { transform: translateY(var(--stand)) scale(1.16, 0.84); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    45%  { transform: translateY(var(--peak-mid)) scale(0.9, 1.13); animation-timing-function: ease-in; }
+    51%  { transform: translateY(var(--stand)) scale(1.2, 0.8); animation-timing-function: ease-out; }
+    54%  { transform: translateY(var(--stand)) scale(1, 1); animation-timing-function: ease-in; }
+    58%  { transform: translateY(var(--stand)) scale(1.16, 0.84); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    65%  { transform: translateY(var(--peak-mid)) scale(0.88, 1.15); animation-timing-function: ease-in; }
+    72%  { transform: translateY(0) scale(1.26, 0.74); animation-timing-function: ease-out; }
+    75%  { transform: translateY(0) scale(1, 1); animation-timing-function: ease-in; }
+    76%  { transform: translateY(0) scale(1.16, 0.84); animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+    82%  { transform: translateY(var(--peak-low)) scale(0.92, 1.1); animation-timing-function: ease-in; }
+    88%  { transform: translateY(0) scale(1.16, 0.84); animation-timing-function: ease-out; }
+    90%  { transform: translateY(0) scale(1, 1); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .roo-travel { left: 24%; animation: none; }
+    .roo-hop { transform: translateY(var(--stand)); animation: none; }
   }
 
   .message-box {
@@ -164,8 +240,17 @@
 
   @media (max-width: 480px) {
     .card { padding: 40px 24px 32px; border-radius: 22px; }
-    .logo-wrap .logo-image { width: 142px; }
-    .logo-wrap .logo-text { width: 170px; }
+    .logo-stage {
+      --roo-w: 88px;
+      --text-w: 170px;
+      --floor: 55px;
+      --stand: -105px;
+      --peak-high: -141px;
+      --peak-mid: -134px;
+      --peak-low: -28px;
+      max-width: 300px;
+      padding-top: 88px;
+    }
     .message-box { padding: 22px 20px; }
     .message-box h1 { font-size: 21px; min-height: 88px; }
     .message-box p.subtitle { font-size: 14px; }
@@ -185,8 +270,10 @@
 
   <div class="wrap">
     <div class="card">
-      <div class="logo-wrap">
-        <img class="logo-image" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
+      <div class="logo-stage">
+        <div class="roo-travel">
+          <img class="roo-hop" src="assets/logo_image.png" alt="Kangaroo Crafts kangaroo mascot" />
+        </div>
         <img class="logo-text" src="assets/logo_text.png" alt="Kangaroo Crafts" />
       </div>
 
